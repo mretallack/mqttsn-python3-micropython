@@ -96,14 +96,14 @@ class Client:
 
   def connect(self, cleansession=True):
     self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    self.sock.settimeout(5.0)
+    self.sock.settimeout(10.0)
 
     self.sock.connect((self.host, self.port))
 
     connect = MQTTSN.Connects()
     connect.ClientId = self.clientid
     connect.CleanSession = cleansession
-    connect.KeepAliveTimer = 0
+    connect.Duration = 0
     self.sock.send(connect.pack())
 
     response, address = MQTTSN.unpackPacket(MQTTSN.getPacket(self.sock))

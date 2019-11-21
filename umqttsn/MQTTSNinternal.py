@@ -84,6 +84,10 @@ class Receivers:
       if hasattr(callback, "advertise"):
         callback.advertise(address, packet.GwId, packet.Duration)
 
+    elif packet.mh.MsgType == MQTTSN.PINGRESP:
+      if hasattr(callback, "pingresponse"):
+        callback.pingresponse(address)
+
     elif packet.mh.MsgType == MQTTSN.REGISTER:
       topicmap.register(packet.TopicId, packet.TopicName)
 
@@ -172,5 +176,5 @@ class Receivers:
     except:
       queue.put(sys.exc_info())
       if sys.exc_info()[0] != socket.error:
-        #print("unexpected exception", sys.exc_info())
+        print("unexpected exception", sys.exc_info())
         pass
